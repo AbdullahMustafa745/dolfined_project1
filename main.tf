@@ -1,31 +1,7 @@
 provider "aws" {
-  region  = "us-east-1"
-  profile = "last-python"
+  shared_config_files      = ["/home/abdullah_mustafa/.aws/config"]
+  shared_credentials_files = ["/home/abdullah_mustafa/.aws/credentials"]
+  profile                  = "rds-iam"
+  region                   = "us-east-1"
 }
 
-resource "aws_instance" "web" {
-  ami           = "ami-00ca32bbc84273381"
-  instance_type = lookup(var.type, terraform.workspace)
-  tags = {
-    Name = lookup(var.tag_name, terraform.workspace)
-  }
-}
-
-variable "type" {
-  type = map(any)
-  default = {
-    stage = "t2.medium"
-    dev = "t2.micro"
-    prod = "t2.large"
-  }
-
-}
-
-variable "tag_name" {
-  type = map(any)
-  default = {
-    prod    = "prod_instance"
-    dev     = "dev_instance"
-    stage = "staging_instance"
-  }
-}
